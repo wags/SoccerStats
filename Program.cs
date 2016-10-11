@@ -13,28 +13,22 @@ namespace SoccerStats
         {
             string currentDirectory = Directory.GetCurrentDirectory();
             DirectoryInfo directory = new DirectoryInfo(currentDirectory);
-
-            //var files = directory.GetFiles("*.txt");
-            //foreach(var file in files)
-            //{
-            //    Console.WriteLine(file.Name);
-            //}
-
-            var fileName = Path.Combine(directory.FullName, "data.txt");
-            var file = new FileInfo(fileName);
-            if (file.Exists)
+            var fileName = Path.Combine(directory.FullName, "SoccerGameResults.csv");
+            var fileContents = ReadFile(fileName);
+            string[] fileLines = fileContents.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var line in fileLines)
             {
-                // This will automatically close the file when the program is done with it
-                using (var reader = new StreamReader(file.FullName))
-                {
-                    Console.SetIn(reader);
-                    Console.WriteLine(Console.ReadLine());
-                }
-
-                Console.ReadLine();
-          
+                Console.WriteLine(line);
             }
-                        
+                                   
+        }
+
+        public static string ReadFile(string fileName)
+        {
+            using (var reader = new StreamReader(fileName))
+            {
+                return reader.ReadToEnd();
+            }
         }
     }
 }
